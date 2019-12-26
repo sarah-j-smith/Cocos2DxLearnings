@@ -25,10 +25,12 @@
 #pragma once
 
 #include "cocos2d.h"
-#include "GameSprite.hpp"
+
+#include "GameSprite.h"
 
 #define GOAL_WIDTH 400
 
+class GameSprite;
 
 class GameLayer : public cocos2d::Layer
 {

@@ -1,23 +1,24 @@
 //
-//  Player.hpp
+//  Player.h
 //  airhockey
 //
 //  Created by Sarah Smith on 26/Dec/19.
 //  Copyright © 2019 Smithsoft. All rights reserved.
 //
 
-#ifndef Player_hpp
-#define Player_hpp
+#pragma once
 
 #include <stdio.h>
 
-#include "GameSprite.hpp"
+class GameSprite;
 
 struct Player {
     
+    enum Side { North, South };
+    
     int score;
     
+    Side side;
+    
     GameSprite *sprite;
-}
-
-#endif /* Player_hpp */
+};

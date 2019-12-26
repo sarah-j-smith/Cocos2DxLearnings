@@ -1,13 +1,12 @@
 //
-//  GameSprite.hpp
+//  GameSprite.h
 //  airhockey
 //
 //  Created by Sarah Smith on 29/Nov/19.
 //  Copyright © 2019 Smithsoft. All rights reserved.
 //
 
-#ifndef GameSprite_hpp
-#define GameSprite_hpp
+#pragma once
 
 #include "cocos2d.h"
 
@@ -34,5 +33,3 @@ public:
 using GameSpritePtr = GameSprite* ;
 using GameSpriteList = cocos2d::Vector<GameSpritePtr> ;
 
-
-#endif /* GameSprite_hpp */

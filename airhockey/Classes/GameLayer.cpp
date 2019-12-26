@@ -25,6 +25,8 @@
 #include "GameLayer.h"
 #include "SimpleAudioEngine.h"
 
+#include "GameSprite.h"
+
 #include <memory>
 
 #include <iostream>

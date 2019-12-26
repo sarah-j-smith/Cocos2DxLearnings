@@ -6,6 +6,8 @@
 //  Copyright © 2019 Smithsoft. All rights reserved.
 //
 
-#include "Player.hpp"
+#include "Player.h"
 
-class
+#include "GameSprite.h"
+
+

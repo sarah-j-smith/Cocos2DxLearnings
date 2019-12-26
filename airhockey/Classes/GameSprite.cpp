@@ -6,7 +6,7 @@
 //  Copyright © 2019 Smithsoft. All rights reserved.
 //
 
-#include "GameSprite.hpp"
+#include "GameSprite.h"
 
 GameSprite::GameSprite()
 {

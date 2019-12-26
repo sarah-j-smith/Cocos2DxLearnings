@@ -150,9 +150,9 @@
 		F62F3B7923912C930036E751 /* sd */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sd; sourceTree = "<group>"; };
 		F62F3B7A23912C930036E751 /* hd */ = {isa = PBXFileReference; lastKnownFileType = folder; path = hd; sourceTree = "<group>"; };
 		F62F3B8523912FDF0036E751 /* GameSprite.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GameSprite.cpp; sourceTree = "<group>"; };
-		F62F3B8623912FDF0036E751 /* GameSprite.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GameSprite.hpp; sourceTree = "<group>"; };
+		F62F3B8623912FDF0036E751 /* GameSprite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameSprite.h; sourceTree = "<group>"; };
 		F67B175B23B468FF00783E0A /* Player.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
-		F67B175C23B468FF00783E0A /* Player.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Player.hpp; sourceTree = "<group>"; };
+		F67B175C23B468FF00783E0A /* Player.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		F69CA00D2393A55700FF1B3D /* hit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hit.wav; sourceTree = "<group>"; };
 		F69CA00E2393A55700FF1B3D /* score.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = score.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -302,9 +302,9 @@
 				46880B8619C43A87006E1F66 /* GameLayer.cpp */,
 				46880B8719C43A87006E1F66 /* GameLayer.h */,
 				F62F3B8523912FDF0036E751 /* GameSprite.cpp */,
-				F62F3B8623912FDF0036E751 /* GameSprite.hpp */,
+				F62F3B8623912FDF0036E751 /* GameSprite.h */,
 				F67B175B23B468FF00783E0A /* Player.cpp */,
-				F67B175C23B468FF00783E0A /* Player.hpp */,
+				F67B175C23B468FF00783E0A /* Player.h */,
 			);
 			name = Classes;
 			path = ../Classes;
