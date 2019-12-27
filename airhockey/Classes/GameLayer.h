@@ -62,9 +62,12 @@ public:
 private:
     Size _screenSize;
     
-    void playerScore(int player);
+    void playerScore(Player::Side side);
     void setupTouchHandlers();
     void setupPlayers();
     void setupScoreLabels();
     void setupDebugShapes();
+    
+    bool isBallInsideGoal();
+    void playHit();
 };

@@ -57,10 +57,10 @@ void GameLayer::setupPlayers()
 
 void GameLayer::setupScoreLabels()
 {
-    _player1ScoreLabel = Label::createWithTTF("0", "arial.ttf", 30);
+    _player1ScoreLabel = Label::createWithTTF("0", "arial.ttf", 60);
     _player1ScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
     _player1ScoreLabel->setRotation(90);
-    _player2ScoreLabel = Label::createWithTTF("0", "arial.ttf", 30);
+    _player2ScoreLabel = Label::createWithTTF("0", "arial.ttf", 60);
     _player2ScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
     _player2ScoreLabel->setRotation(90);
 }
@@ -80,7 +80,7 @@ bool GameLayer::init()
     setupPlayers();
     setupScoreLabels();
     
-    const float labelOffset = 30.0f;
+    const float labelOffset = 80.;
     Vec2 center = _screenSize / 2;
     Vec2 halfwayLineRight = Vec2(_screenSize.width, center.y);
     float paddleDiam = _player1->radius() * 2;
@@ -100,15 +100,16 @@ bool GameLayer::init()
     _player2->setPosition(Vec2(center.x, _screenSize.height - paddleDiam));
     addChild(_player2);
     
-    auto p1ScorePos = halfwayLineRight + Vec2(0, -labelOffset);
+    auto p1ScorePos = halfwayLineRight + Vec2(-20, -labelOffset);
     _player1ScoreLabel->setPosition(p1ScorePos);
     addChild(_player1ScoreLabel);
 
-    auto p2ScorePos = halfwayLineRight + Vec2(0, +labelOffset);
+    auto p2ScorePos = halfwayLineRight + Vec2(-20, +labelOffset);
     _player2ScoreLabel->setPosition(p2ScorePos);
     addChild(_player2ScoreLabel);
     
     setupTouchHandlers();
+    setupDebugShapes();
     
     schedule(schedule_selector(GameLayer::update));
 
@@ -159,7 +160,7 @@ void GameLayer::onTouchesMoved(const std::vector<Touch *> &touches, Event *event
             auto halfWayLine = _screenSize.height * 0.5f;
             auto paddleRadius = p->radius();
             auto courtMargin = Vec2(paddleRadius, paddleRadius);
-            auto courtTopLeft = (Vec2)_screenSize - courtMargin;
+            auto courtTopRight = (Vec2)_screenSize - courtMargin;
             auto northCourtBottomLeft = Vec2(paddleRadius, halfWayLine + paddleRadius);
             auto southCourtTopRight = Vec2(_screenSize.width - paddleRadius, halfWayLine - paddleRadius);
             Vec2 nextPosition = tap;
@@ -167,7 +168,7 @@ void GameLayer::onTouchesMoved(const std::vector<Touch *> &touches, Event *event
             // Keep the paddles inside their respective courts
             switch (player.side) {
                 case Player::North:
-                    nextPosition = nextPosition.getClampPoint(northCourtBottomLeft, courtTopLeft);
+                    nextPosition = nextPosition.getClampPoint(northCourtBottomLeft, courtTopRight);
                     break;
                     
                 case Player::South:
@@ -237,12 +238,58 @@ void GameLayer::update(float dt)
             float mag_ball = ballVector.lengthSquared();
             float mag_player = playerVector.lengthSquared();
             float force = sqrt(mag_ball + mag_player);
-            float angle = atan2(deltaBallNextPlayer.x, deltaBallNextPlayer.y);
+            float angle = atan2(deltaBallNextPlayer.y, deltaBallNextPlayer.x);
             ballVector.x = force * cos(angle);
             ballVector.y = force * sin(angle);
             ballNextPosition.x = playerNextPosition.x + (p->radius() + _ball->radius() + force) * cos(angle);
             ballNextPosition.y = playerNextPosition.y + (p->radius() + _ball->radius() + force) * sin(angle);
-            CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("hit.wav");
+            playHit();
+        }
+        
+        if (ballNextPosition.x < _ball->radius()) {
+            ballNextPosition.x = _ball->radius();
+            ballVector.x *= -0.8f;
+            playHit();
+        }
+        
+        if (ballNextPosition.x > _screenSize.width - _ball->radius())
+        {
+            ballNextPosition.x = _screenSize.width - _ball->radius();
+            ballVector.x *= -0.8f;
+            playHit();
+        }
+        
+        if (ballNextPosition.y > _screenSize.height - _ball->radius())
+        {
+            if (!isBallInsideGoal())
+            {
+                ballNextPosition.y = _screenSize.height - _ball->radius();
+                ballVector.y *= -0.8f;
+                playHit();
+            }
+        }
+        
+        if (ballNextPosition.y < _ball->radius())
+        {
+            if (!isBallInsideGoal())
+            {
+                ballNextPosition.y = _ball->radius();
+                ballVector.y *= -0.8f;
+                playHit();
+            }
+        }
+        
+        _ball->setVector(ballVector);
+        _ball->setNextPosition(ballNextPosition);
+        
+        if (ballNextPosition.y < -_ball->radius() * 2)
+        {
+            playerScore(Player::South);
+        }
+        
+        if (ballNextPosition.y > _screenSize.height + _ball->radius() * 2)
+        {
+            playerScore(Player::North);
         }
         
         _player1->setPosition(_player1->getNextPosition());
@@ -251,7 +298,22 @@ void GameLayer::update(float dt)
     }
 }
 
-void GameLayer::playerScore(int player)
+bool GameLayer::isBallInsideGoal()
+{
+    if (_ball->getPosition().x < (_screenSize.width - GOAL_WIDTH) * 0.5f ||
+        _ball->getPosition().x > (_screenSize.width + GOAL_WIDTH) * 0.5f)
+    {
+        return false;
+    }
+    return true;
+}
+
+void GameLayer::playHit()
+{
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("hit.wav");
+}
+
+void GameLayer::playerScore(Player::Side side)
 {
     //
 }
