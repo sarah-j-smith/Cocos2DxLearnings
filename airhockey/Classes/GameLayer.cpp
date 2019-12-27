@@ -45,6 +45,26 @@ static void problemLoading(const char* filename)
     printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in HelloWorldScene.cpp\n");
 }
 
+void GameLayer::setupPlayers()
+{
+    _player1 = GameSprite::gameSpriteWithFile("mallet.png");
+    _player2 = GameSprite::gameSpriteWithFile("mallet.png");
+    _players = {
+        { 0, Player::South, _player1 },
+        { 0, Player::North, _player2 }
+    };
+}
+
+void GameLayer::setupScoreLabels()
+{
+    _player1ScoreLabel = Label::createWithTTF("0", "arial.ttf", 30);
+    _player1ScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
+    _player1ScoreLabel->setRotation(90);
+    _player2ScoreLabel = Label::createWithTTF("0", "arial.ttf", 30);
+    _player2ScoreLabel->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
+    _player2ScoreLabel->setRotation(90);
+}
+
 // on "init" you need to initialize your instance
 bool GameLayer::init()
 {
@@ -55,34 +75,24 @@ bool GameLayer::init()
         return false;
     }
 
-    _player1Score = 0;
-    _player2Score = 0;
-    
     _screenSize = Director::getInstance()->getWinSize();
 
-    auto court = Sprite::create("court.png");
-    _player1 = GameSprite::gameSpriteWithFile("mallet.png");
-    _player2 = GameSprite::gameSpriteWithFile("mallet.png");
-    _ball = GameSprite::gameSpriteWithFile("puck.png");
-    
-    _player1ScoreLabel = Label::createWithTTF("0", "arial.ttf", 30);
-    _player1ScoreLabel->setAnchorPoint(Vec2(0.5, 1.0));
-    _player1ScoreLabel->setRotation(90);
-    _player2ScoreLabel = Label::createWithTTF("0", "arial.ttf", 30);
-    _player2ScoreLabel->setAnchorPoint(Vec2(0.5, 1.0));
-    _player2ScoreLabel->setRotation(90);
-
-    auto l = new GameSpriteList { _player1, _player2 };
-    _players = std::unique_ptr<GameSpriteList>(l);
+    setupPlayers();
+    setupScoreLabels();
     
     const float labelOffset = 30.0f;
     Vec2 center = _screenSize / 2;
     Vec2 halfwayLineRight = Vec2(_screenSize.width, center.y);
     float paddleDiam = _player1->radius() * 2;
-    float ballDiam = _ball->radius() * 2;
 
+    auto court = Sprite::create("court.png");
     court->setPosition(center);
     addChild(court);
+    
+    _ball = GameSprite::gameSpriteWithFile("puck.png");
+    auto ballPosition = Vec2(center.x, center.y - _ball->radius() * 2);
+    _ball->setPosition(ballPosition);
+    addChild(_ball);
     
     _player1->setPosition(Vec2(center.x, paddleDiam));
     addChild(_player1);
@@ -90,23 +100,9 @@ bool GameLayer::init()
     _player2->setPosition(Vec2(center.x, _screenSize.height - paddleDiam));
     addChild(_player2);
     
-    _ball->setPosition(Vec2(center.x, center.y - ballDiam));
-    addChild(_ball);
-    
     auto p1ScorePos = halfwayLineRight + Vec2(0, -labelOffset);
     _player1ScoreLabel->setPosition(p1ScorePos);
     addChild(_player1ScoreLabel);
-
-    // Move the co-ord system for rendering the Draw commands that are executed by the
-    // draw node to be the same position as the label, and then draw a large dot there.
-    auto debugCircle = DrawNode::create();
-    debugCircle->drawDot(Vec2::ZERO, 3.0, Color4F::RED);
-    _player1ScoreLabel->addChild(debugCircle);
-    
-    auto debugBoundingBox = DrawNode::create();
-    auto labelSize = _player1ScoreLabel->getContentSize();
-    debugBoundingBox->drawRect(Vec2::ZERO, labelSize, Color4F::ORANGE);
-    _player1ScoreLabel->addChild(debugBoundingBox);
 
     auto p2ScorePos = halfwayLineRight + Vec2(0, +labelOffset);
     _player2ScoreLabel->setPosition(p2ScorePos);
@@ -119,6 +115,18 @@ bool GameLayer::init()
     return true;
 }
 
+void GameLayer::setupDebugShapes()
+{
+    auto debugCircle = DrawNode::create();
+    debugCircle->drawDot(Vec2::ZERO, 3.0, Color4F::RED);
+    _player1ScoreLabel->addChild(debugCircle);
+    
+    auto debugBoundingBox = DrawNode::create();
+    auto labelSize = _player1ScoreLabel->getContentSize();
+    debugBoundingBox->drawRect(Vec2::ZERO, labelSize, Color4F::ORANGE);
+    _player1ScoreLabel->addChild(debugBoundingBox);
+}
+
 void GameLayer::onTouchesBegan(const std::vector<Touch *> &touches, Event *event)
 {
     for (auto touch : touches)
@@ -126,8 +134,9 @@ void GameLayer::onTouchesBegan(const std::vector<Touch *> &touches, Event *event
         if (touch)
         {
             auto tap = touch->getLocation();
-            for ( auto p : *_players)
+            for ( const Player &player : _players)
             {
+                auto p = player.sprite;
                 if (p->getBoundingBox().containsPoint(tap))
                 {
                     p->setTouch(touch);
@@ -142,36 +151,31 @@ void GameLayer::onTouchesMoved(const std::vector<Touch *> &touches, Event *event
     for (auto touch: touches)
     {
         auto tap = touch->getLocation();
-        std::cout << "Tap: " << tap.x << ", " << tap.y << std::endl;
-        for (auto p : *_players)
+        for (const Player &player : _players)
         {
-            if (p->getTouch() == touch)
-            {
-                // Keep puck within the court
-                auto minPlayer = Vec2(p->radius(), p->radius());
-                auto maxPlayer = Vec2(_screenSize.width - p->radius(), _screenSize.height - p->radius());
-                auto nextPosition = tap.getClampPoint(minPlayer, maxPlayer);
-
-                // Keep puck in its own half of the court
-                auto halfWayLine = _screenSize.height * 0.5f;
-                auto lowerHalfBound = halfWayLine - p->radius();
-                auto upperHalfBound = halfWayLine + p->radius();
-                if (p->getPositionY() < halfWayLine)
-                {
-                    if (nextPosition.y > lowerHalfBound)
-                    {
-                        nextPosition.y = lowerHalfBound;
-                    }
-                } else {
-                    if (nextPosition.y < upperHalfBound)
-                    {
-                        nextPosition.y = upperHalfBound;
-                    }
-                }
-                
-                p->setNextPosition(nextPosition);
-                p->setVector(tap - p->getPosition());
+            auto p = player.sprite;
+            if (p->getTouch() != touch) continue;
+            
+            auto halfWayLine = _screenSize.height * 0.5f;
+            auto paddleRadius = p->radius();
+            auto courtMargin = Vec2(paddleRadius, paddleRadius);
+            auto courtTopLeft = (Vec2)_screenSize - courtMargin;
+            auto northCourtBottomLeft = Vec2(paddleRadius, halfWayLine + paddleRadius);
+            auto southCourtTopRight = Vec2(_screenSize.width - paddleRadius, halfWayLine - paddleRadius);
+            Vec2 nextPosition = tap;
+            
+            // Keep the paddles inside their respective courts
+            switch (player.side) {
+                case Player::North:
+                    nextPosition = nextPosition.getClampPoint(northCourtBottomLeft, courtTopLeft);
+                    break;
+                    
+                case Player::South:
+                    nextPosition = nextPosition.getClampPoint(courtMargin, southCourtTopRight);
+                    break;
             }
+            p->setNextPosition(nextPosition);
+            p->setVector(tap - p->getPosition());
         }
     }
 }
@@ -180,8 +184,9 @@ void GameLayer::onTouchesEnded(const std::vector<Touch *> &touches, Event *event
 {
     for (auto touch: touches)
     {
-        for (auto p : *_players)
+        for (const Player &player : _players)
         {
+            auto p = player.sprite;
             if (p->getTouch() != nullptr && p->getTouch() == touch)
             {
                 p->setTouch(nullptr);
@@ -195,8 +200,9 @@ void GameLayer::onTouchesCancelled(const std::vector<Touch *> &touches, Event *e
 {
     for (auto touch: touches)
     {
-        for (auto p : *_players)
+        for (const Player &player: _players)
         {
+            auto p = player.sprite;
             if (p->getTouch() != nullptr && p->getTouch() == touch)
             {
                 p->setTouch(nullptr);
@@ -215,8 +221,9 @@ void GameLayer::update(float dt)
     Point playerVector;
     
     float squared_radii = pow(_player1->radius() + _ball->radius(), 2);
-    for (auto p: *_players)
+    for (const Player &player: _players)
     {
+        auto p = player.sprite;
         playerNextPosition = p->getNextPosition();
         playerVector = p->getVector();
         

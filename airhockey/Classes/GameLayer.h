@@ -27,6 +27,7 @@
 #include "cocos2d.h"
 
 #include "GameSprite.h"
+#include "Player.h"
 
 #define GOAL_WIDTH 400
 
@@ -38,7 +39,9 @@ public:
     GameSprite *_player1;
     GameSprite *_player2;
     GameSprite *_ball;
-    std::unique_ptr<GameSpriteList> _players;
+    
+    std::vector<Player> _players;
+    
     Label *_player1ScoreLabel;
     Label *_player2ScoreLabel;
 
@@ -59,9 +62,9 @@ public:
 private:
     Size _screenSize;
     
-    int _player1Score;
-    int _player2Score;
-    
     void playerScore(int player);
     void setupTouchHandlers();
+    void setupPlayers();
+    void setupScoreLabels();
+    void setupDebugShapes();
 };
