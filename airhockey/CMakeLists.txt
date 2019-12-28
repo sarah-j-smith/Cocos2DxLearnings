@@ -52,12 +52,14 @@ list(APPEND GAME_SOURCE
      Classes/GameLayer.cpp
      Classes/GameSprite.cpp
      Classes/Player.cpp
+     Classes/LaunchScreen.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
      Classes/GameLayer.h
      Classes/GameSprite.h
      Classes/Player.h
+     Classes/LaunchScreen.h
      )
 
 if(ANDROID)

@@ -9,9 +9,11 @@
 #include "LaunchScreen.h"
 #include "GameLayer.h"
 
+#include "cocos2d.h"
+
 Scene* LaunchScreen::createScene()
 {
-    auto gameScene = new cocos2d::Scene();
+    auto gameScene = Scene::create();
     auto gameLayer = LaunchScreen::create();
     gameScene->addChild(gameLayer);
     return gameScene;

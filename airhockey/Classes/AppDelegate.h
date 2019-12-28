@@ -22,14 +22,6 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-//
-//  GameSprite.cpp
-//  airhockey
-//
-//  Modifications & additions started by Sarah Smith on 29/Nov/19.
-//  Copyright © 2019 Smithsoft. All rights reserved.
-//
-
 #ifndef  _APP_DELEGATE_H_
 #define  _APP_DELEGATE_H_
 
