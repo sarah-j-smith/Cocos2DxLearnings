@@ -22,6 +22,14 @@
  THE SOFTWARE.
  ****************************************************************************/
 
+//
+//  GameSprite.cpp
+//  airhockey
+//
+//  Modifications & additions started by Sarah Smith on 29/Nov/19.
+//  Copyright © 2019 Smithsoft. All rights reserved.
+//
+
 #include "GameLayer.h"
 #include "SimpleAudioEngine.h"
 
@@ -50,8 +58,8 @@ void GameLayer::setupPlayers()
     _player1 = GameSprite::gameSpriteWithFile("mallet.png");
     _player2 = GameSprite::gameSpriteWithFile("mallet.png");
     _players = {
-        { 0, Player::South, _player1 },
-        { 0, Player::North, _player2 }
+        { 0, Player::South, _player1, _player1ScoreLabel },
+        { 0, Player::North, _player2, _player2ScoreLabel }
     };
 }
 
@@ -77,8 +85,8 @@ bool GameLayer::init()
 
     _screenSize = Director::getInstance()->getWinSize();
 
-    setupPlayers();
     setupScoreLabels();
+    setupPlayers();
     
     const float labelOffset = 80.;
     Vec2 center = _screenSize / 2;
@@ -282,14 +290,16 @@ void GameLayer::update(float dt)
         _ball->setVector(ballVector);
         _ball->setNextPosition(ballNextPosition);
         
+        // If the ball has completely gone off the court to the south then
+        // the North player has scored.
         if (ballNextPosition.y < -_ball->radius() * 2)
         {
-            playerScore(Player::South);
+            playerScore(Player::North);
         }
         
         if (ballNextPosition.y > _screenSize.height + _ball->radius() * 2)
         {
-            playerScore(Player::North);
+            playerScore(Player::South);
         }
         
         _player1->setPosition(_player1->getNextPosition());
@@ -315,7 +325,30 @@ void GameLayer::playHit()
 
 void GameLayer::playerScore(Player::Side side)
 {
-    //
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("score.wav");
+    _ball->setVector(Vec2::ZERO);
+    char score_buffer[10];
+
+    auto player = std::find_if(_players.begin(), _players.end(), [side](Player &p)->bool { return p.side == side; });
+    player->score += 1;
+    snprintf(score_buffer, 9, "%i", player->score);
+    player->label->setString(score_buffer);
+    
+    Vec2 center = _screenSize / 2;
+    float ballOffset = (side == Player::South ? _ball->radius() * 2 : _ball->radius() * -2);
+    _ball->setNextPosition(center + Vec2(0, ballOffset));
+
+    resetPlayers();
+}
+
+void GameLayer::resetPlayers()
+{
+    Vec2 center = _screenSize / 2;
+    float paddleDiam = _player1->radius() * 2;
+    _player1->setPosition(Vec2(center.x, paddleDiam));
+    _player1->setTouch(nullptr);
+    _player2->setPosition(Vec2(center.x, _screenSize.height - paddleDiam));
+    _player2->setTouch(nullptr);
 }
 
 void GameLayer::setupTouchHandlers()

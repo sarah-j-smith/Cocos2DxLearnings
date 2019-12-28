@@ -21,4 +21,5 @@ struct Player {
     Side side;
     
     GameSprite *sprite;
+    cocos2d::Label *label;
 };

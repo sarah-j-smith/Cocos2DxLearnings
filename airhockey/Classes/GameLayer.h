@@ -67,6 +67,7 @@ private:
     void setupPlayers();
     void setupScoreLabels();
     void setupDebugShapes();
+    void resetPlayers();
     
     bool isBallInsideGoal();
     void playHit();
