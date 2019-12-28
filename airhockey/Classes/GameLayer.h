@@ -52,6 +52,8 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(GameLayer);
     
+    static Scene *createScene();
+    
     virtual void onTouchesBegan(const std::vector<Touch *> &touches, Event *event);
     virtual void onTouchesMoved(const std::vector<Touch *> &touches, Event *event);
     virtual void onTouchesEnded(const std::vector<Touch *> &, Event *event);

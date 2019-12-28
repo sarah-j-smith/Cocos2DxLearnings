@@ -32,6 +32,9 @@
 
 #include "AppDelegate.h"
 #include "GameLayer.h"
+#include "LaunchScreen.h"
+
+#include <iostream>
 
 // #define USE_AUDIO_ENGINE 1
 #define USE_SIMPLE_AUDIO_ENGINE 1
@@ -147,7 +150,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // create a scene. it's an autorelease object
     auto scene = createScene();
-    scene->autorelease();
 
     // run
     director->runWithScene(scene);
@@ -186,9 +188,10 @@ void AppDelegate::applicationWillEnterForeground() {
 
 Scene* AppDelegate::createScene()
 {
-    auto gameScene = new cocos2d::Scene();
-    auto gameLayer = GameLayer::create();
-    gameScene->addChild(gameLayer);
-    return gameScene;
+    auto launchScene = cocos2d::Scene::create();
+    auto launchLayer = LaunchScreen::create();
+    launchScene->addChild(launchLayer);
+    
+    return launchScene;
 }
 

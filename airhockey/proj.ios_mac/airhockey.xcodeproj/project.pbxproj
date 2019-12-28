@@ -57,6 +57,8 @@
 		F62F3B8823912FDF0036E751 /* GameSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F62F3B8523912FDF0036E751 /* GameSprite.cpp */; };
 		F67B175D23B468FF00783E0A /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F67B175B23B468FF00783E0A /* Player.cpp */; };
 		F67B175E23B468FF00783E0A /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F67B175B23B468FF00783E0A /* Player.cpp */; };
+		F67B176323B7278C00783E0A /* LaunchScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F67B176123B7278C00783E0A /* LaunchScreen.cpp */; };
+		F67B176423B7278C00783E0A /* LaunchScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F67B176123B7278C00783E0A /* LaunchScreen.cpp */; };
 		F69CA00F2393A55700FF1B3D /* hit.wav in Resources */ = {isa = PBXBuildFile; fileRef = F69CA00D2393A55700FF1B3D /* hit.wav */; };
 		F69CA0102393A55700FF1B3D /* hit.wav in Resources */ = {isa = PBXBuildFile; fileRef = F69CA00D2393A55700FF1B3D /* hit.wav */; };
 		F69CA0112393A55700FF1B3D /* score.wav in Resources */ = {isa = PBXBuildFile; fileRef = F69CA00E2393A55700FF1B3D /* score.wav */; };
@@ -153,6 +155,8 @@
 		F62F3B8623912FDF0036E751 /* GameSprite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameSprite.h; sourceTree = "<group>"; };
 		F67B175B23B468FF00783E0A /* Player.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
 		F67B175C23B468FF00783E0A /* Player.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		F67B176123B7278C00783E0A /* LaunchScreen.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LaunchScreen.cpp; sourceTree = "<group>"; };
+		F67B176223B7278C00783E0A /* LaunchScreen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LaunchScreen.h; sourceTree = "<group>"; };
 		F69CA00D2393A55700FF1B3D /* hit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hit.wav; sourceTree = "<group>"; };
 		F69CA00E2393A55700FF1B3D /* score.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = score.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -305,6 +309,8 @@
 				F62F3B8623912FDF0036E751 /* GameSprite.h */,
 				F67B175B23B468FF00783E0A /* Player.cpp */,
 				F67B175C23B468FF00783E0A /* Player.h */,
+				F67B176123B7278C00783E0A /* LaunchScreen.cpp */,
+				F67B176223B7278C00783E0A /* LaunchScreen.h */,
 			);
 			name = Classes;
 			path = ../Classes;
@@ -470,6 +476,7 @@
 				F67B175D23B468FF00783E0A /* Player.cpp in Sources */,
 				1AF87B8B1F6F782A007BE51C /* RootViewController.mm in Sources */,
 				F62F3B8723912FDF0036E751 /* GameSprite.cpp in Sources */,
+				F67B176323B7278C00783E0A /* LaunchScreen.cpp in Sources */,
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				1AF87B8A1F6F7822007BE51C /* main.m in Sources */,
 				46880B8A19C43A87006E1F66 /* GameLayer.cpp in Sources */,
@@ -480,6 +487,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F67B176423B7278C00783E0A /* LaunchScreen.cpp in Sources */,
 				F62F3B8823912FDF0036E751 /* GameSprite.cpp in Sources */,
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
@@ -520,7 +528,7 @@
 				GCC_PREFIX_HEADER = ios/Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					USE_FILE32API,
-					"COCOS2D_DEBUG=1",
+					"COCOS2D_DEBUG=2",
 					"CC_ENABLE_CHIPMUNK_INTEGRATION=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;

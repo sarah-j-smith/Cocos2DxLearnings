@@ -35,11 +35,15 @@
 
 #include "GameSprite.h"
 
-#include <memory>
-
-#include <iostream>
-
 USING_NS_CC;
+
+Scene* GameLayer::createScene()
+{
+    auto gameScene = new cocos2d::Scene();
+    auto gameLayer = GameLayer::create();
+    gameScene->addChild(gameLayer);
+    return gameScene;
+}
 
 GameLayer::~GameLayer()
 {
@@ -361,4 +365,3 @@ void GameLayer::setupTouchHandlers()
     touchListener->onTouchesCancelled = std::bind(&GameLayer::onTouchesCancelled, this, _1, _2);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
 }
-
