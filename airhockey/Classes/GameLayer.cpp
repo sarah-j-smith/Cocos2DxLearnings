@@ -31,9 +31,9 @@
 //
 
 #include "GameLayer.h"
-#include "SimpleAudioEngine.h"
-
 #include "GameSprite.h"
+
+#include <AudioEngine.h>
 
 USING_NS_CC;
 
@@ -123,8 +123,8 @@ bool GameLayer::init()
     setupTouchHandlers();
     setupDebugShapes();
     
-    schedule(schedule_selector(GameLayer::update));
-
+    schedule(CC_SCHEDULE_SELECTOR(GameLayer::update));
+    
     return true;
 }
 
@@ -324,12 +324,13 @@ bool GameLayer::isBallInsideGoal()
 
 void GameLayer::playHit()
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("hit.wav");
+    AudioEngine::play2d("hit.wav");
 }
 
 void GameLayer::playerScore(Player::Side side)
 {
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("score.wav");
+    AudioEngine::play2d("score.wav");
+    
     _ball->setVector(Vec2::ZERO);
     char score_buffer[10];
 

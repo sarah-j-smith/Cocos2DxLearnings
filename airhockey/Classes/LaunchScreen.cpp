@@ -38,7 +38,9 @@ bool LaunchScreen::init()
     _logo->setPosition(_screenSize / 2);
     addChild(_logo);
     
-    schedule(schedule_selector(LaunchScreen::update));
+    auto update_sel = static_cast<cocos2d::SEL_SCHEDULE>(&LaunchScreen::update);
+    schedule(update_sel);
+    
     setupTouchHandlers();
     
     return true;

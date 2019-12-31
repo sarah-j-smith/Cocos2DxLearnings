@@ -62,6 +62,8 @@ public:
 private:
     
     cocos2d::Scene *createScene();
+    
+    void setupSearchPaths(cocos2d::Size frameSize);
 };
 
 #endif // _APP_DELEGATE_H_

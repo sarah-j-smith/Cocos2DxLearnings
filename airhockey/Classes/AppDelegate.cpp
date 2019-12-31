@@ -22,36 +22,17 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-//
-//  GameSprite.cpp
-//  airhockey
-//
-//  Modifications & additions started by Sarah Smith on 29/Nov/19.
-//  Copyright © 2019 Smithsoft. All rights reserved.
-//
-
 #include "AppDelegate.h"
-#include "GameLayer.h"
 #include "LaunchScreen.h"
 
-#include <iostream>
-
-// #define USE_AUDIO_ENGINE 1
-#define USE_SIMPLE_AUDIO_ENGINE 1
-
-#if USE_AUDIO_ENGINE && USE_SIMPLE_AUDIO_ENGINE
-#error "Don't use AudioEngine and SimpleAudioEngine at the same time. Please just select one in your game!"
-#endif
+#define USE_AUDIO_ENGINE 1
 
 #if USE_AUDIO_ENGINE
 #include "audio/include/AudioEngine.h"
-using namespace cocos2d::experimental;
-#elif USE_SIMPLE_AUDIO_ENGINE
-#include "audio/include/SimpleAudioEngine.h"
-using namespace CocosDenshion;
 #endif
 
 USING_NS_CC;
+
 
 static cocos2d::Size designResolutionSize = cocos2d::Size(768, 1024);
 static cocos2d::Size smallResolutionSize = cocos2d::Size(384, 512);
@@ -66,8 +47,6 @@ AppDelegate::~AppDelegate()
 {
 #if USE_AUDIO_ENGINE
     AudioEngine::end();
-#elif USE_SIMPLE_AUDIO_ENGINE
-    SimpleAudioEngine::end();
 #endif
 }
 
@@ -100,51 +79,33 @@ bool AppDelegate::applicationDidFinishLaunching() {
 #endif
         director->setOpenGLView(glview);
     }
-    
+
     // turn on display FPS
     director->setDisplayStats(true);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0f / 60);
-    
+
     // Set the design resolution
     glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::SHOW_ALL);
     auto frameSize = glview->getFrameSize();
-    
-    // https://stackoverflow.com/questions/23716220/cocos2d-x-3-0-create-sprite-by-relative-path
-    std::vector<std::string> resDirOrders;
-
-    std::vector<std::string> searchPaths = FileUtils::getInstance()->getSearchPaths();
-    searchPaths.insert(searchPaths.begin(), "res");
-    searchPaths.insert(searchPaths.begin(), "fonts");
-    FileUtils::getInstance()->setSearchPaths(searchPaths);
-
-    if (frameSize.height > mediumResolutionSize.height)
-    {
-        director->setContentScaleFactor(2);
-        resDirOrders.push_back("hd");
-    }
-    else{
-        director->setContentScaleFactor(1);
-        resDirOrders.push_back("sd");
-    }
-
-    FileUtils::getInstance()->setSearchResolutionsOrder(resDirOrders);
+    // if the frame's height is larger than the height of medium size.
     if (frameSize.height > mediumResolutionSize.height)
     {        
-        // if the frame's height is larger than the height of medium size.
         director->setContentScaleFactor(MIN(largeResolutionSize.height/designResolutionSize.height, largeResolutionSize.width/designResolutionSize.width));
     }
+    // if the frame's height is larger than the height of small size.
     else if (frameSize.height > smallResolutionSize.height)
     {        
-        // if the frame's height is larger than the height of small size.
         director->setContentScaleFactor(MIN(mediumResolutionSize.height/designResolutionSize.height, mediumResolutionSize.width/designResolutionSize.width));
     }
+    // if the frame's height is smaller than the height of medium size.
     else
     {        
-        // if the frame's height is smaller than the height of medium size.
         director->setContentScaleFactor(MIN(smallResolutionSize.height/designResolutionSize.height, smallResolutionSize.width/designResolutionSize.width));
     }
+    
+    setupSearchPaths(frameSize);
 
     register_all_packages();
 
@@ -154,10 +115,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // run
     director->runWithScene(scene);
     
+    
     auto hitPath = FileUtils::getInstance()->fullPathForFilename("hit.wav");
     auto scorePath = FileUtils::getInstance()->fullPathForFilename("score.wav");
-    SimpleAudioEngine::getInstance()->preloadEffect(hitPath.c_str());
-    SimpleAudioEngine::getInstance()->preloadEffect(scorePath.c_str());
+    AudioEngine::preload(hitPath.c_str());
+    AudioEngine::preload(scorePath.c_str());
 
     return true;
 }
@@ -168,9 +130,6 @@ void AppDelegate::applicationDidEnterBackground() {
 
 #if USE_AUDIO_ENGINE
     AudioEngine::pauseAll();
-#elif USE_SIMPLE_AUDIO_ENGINE
-    SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
-    SimpleAudioEngine::getInstance()->pauseAllEffects();
 #endif
 }
 
@@ -180,10 +139,29 @@ void AppDelegate::applicationWillEnterForeground() {
 
 #if USE_AUDIO_ENGINE
     AudioEngine::resumeAll();
-#elif USE_SIMPLE_AUDIO_ENGINE
-    SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
-    SimpleAudioEngine::getInstance()->resumeAllEffects();
 #endif
+}
+
+void AppDelegate::setupSearchPaths(Size frameSize)
+{
+    // https://stackoverflow.com/questions/23716220/cocos2d-x-3-0-create-sprite-by-relative-path
+    std::vector<std::string> resDirOrders;
+    std::vector<std::string> searchPaths = FileUtils::getInstance()->getSearchPaths();
+    searchPaths.insert(searchPaths.begin(), "res");
+    searchPaths.insert(searchPaths.begin(), "fonts");
+    FileUtils::getInstance()->setSearchPaths(searchPaths);
+    
+    auto director = Director::getInstance();
+    if (frameSize.height > mediumResolutionSize.height)
+    {
+        director->setContentScaleFactor(2);
+        resDirOrders.push_back("hd");
+    }
+    else{
+        director->setContentScaleFactor(1);
+        resDirOrders.push_back("sd");
+    }
+    FileUtils::getInstance()->setSearchResolutionsOrder(resDirOrders);
 }
 
 Scene* AppDelegate::createScene()
@@ -194,4 +172,3 @@ Scene* AppDelegate::createScene()
     
     return launchScene;
 }
-
