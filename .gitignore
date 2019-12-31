@@ -110,12 +110,12 @@ $RECYCLE.BIN/
 
 # proj.android
 bin/
-proj.android/assets/
-proj.android/bin/
-proj.android/gen/
-proj.android/libs/
-proj.android/local.properties
-proj.android/obj/
+**/proj.android/assets/
+**/proj.android/bin/
+**/proj.android/gen/
+**/proj.android/libs/
+**/proj.android/local.properties
+**/proj.android/obj/
 cocos2d/cocos/platform/android/java/bin/
 cocos2d/cocos/platform/android/java/gen/
 cocos2d/cocos/platform/android/java/local.properties
@@ -126,23 +126,23 @@ cocos2d/cocos/platform/android/java/res/
 # proj.android-studio
 .idea/
 *.iml
-proj.android-studio/app/assets/
-proj.android-studio/app/obj/
-proj.android-studio/app/libs/armeabi/
-proj.android-studio/app/libs/armeabi-v7a/
-proj.android-studio/app/libs/x86/
-proj.android-studio/app/gradle.properties
-proj.android-studio/app/local.properties
-proj.android-studio/*/build/
+**/proj.android-studio/app/assets/
+**/proj.android-studio/app/obj/
+**/proj.android-studio/app/libs/armeabi/
+**/proj.android-studio/app/libs/armeabi-v7a/
+**/proj.android-studio/app/libs/x86/
+**/proj.android-studio/app/gradle.properties
+**/proj.android-studio/app/local.properties
+**/proj.android-studio/*/build/
 cocos2d/cocos/platform/android/libcocos2dx/build/
 cocos2d/cocos/platform/android/java/libs/gps/build/
 
 # proj.ios_mac
 cocos2d/build/build/
 cocos2d/build/cocos2d_libs.xcodeproj/xcuserdata/
-proj.ios_mac/build/
-proj.ios_mac/*.xcodeproj/project.xcworkspace
-proj.ios_mac/*.xcodeproj/xcuserdata/
+**/proj.ios_mac/build/
+**/proj.ios_mac/*.xcodeproj/project.xcworkspace
+**/proj.ios_mac/*.xcodeproj/xcuserdata/
 !*.pch
 
 # proj.linux
@@ -159,8 +159,11 @@ cocos2d/cocos/2d/Release.*/
 cocos2d/cocos/editor-support/spine/proj.win32/Release.*/
 cocos2d/external/Box2D/proj.win32/Release.*/
 cocos2d/external/recast/proj.win32/Release.*/
-proj.win32/*.sdf
-proj.win32/*.opensdf
-proj.win32/Debug.*/
-proj.win32/Release.*/
+**/proj.win32/*.sdf
+**/proj.win32/*.opensdf
+**/proj.win32/Debug.*/
+**/proj.win32/Release.*/
 
+skydefence/ios-build
+skydefence/mac-build
+skydefence/proj.android/app
