@@ -59,6 +59,8 @@
 		F67B175E23B468FF00783E0A /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F67B175B23B468FF00783E0A /* Player.cpp */; };
 		F67B176323B7278C00783E0A /* LaunchScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F67B176123B7278C00783E0A /* LaunchScreen.cpp */; };
 		F67B176423B7278C00783E0A /* LaunchScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F67B176123B7278C00783E0A /* LaunchScreen.cpp */; };
+		F67B176723B7527100783E0A /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = F67B176623B7527100783E0A /* CMakeLists.txt */; };
+		F67B176823B7527100783E0A /* CMakeLists.txt in Resources */ = {isa = PBXBuildFile; fileRef = F67B176623B7527100783E0A /* CMakeLists.txt */; };
 		F69CA00F2393A55700FF1B3D /* hit.wav in Resources */ = {isa = PBXBuildFile; fileRef = F69CA00D2393A55700FF1B3D /* hit.wav */; };
 		F69CA0102393A55700FF1B3D /* hit.wav in Resources */ = {isa = PBXBuildFile; fileRef = F69CA00D2393A55700FF1B3D /* hit.wav */; };
 		F69CA0112393A55700FF1B3D /* score.wav in Resources */ = {isa = PBXBuildFile; fileRef = F69CA00E2393A55700FF1B3D /* score.wav */; };
@@ -157,6 +159,7 @@
 		F67B175C23B468FF00783E0A /* Player.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		F67B176123B7278C00783E0A /* LaunchScreen.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LaunchScreen.cpp; sourceTree = "<group>"; };
 		F67B176223B7278C00783E0A /* LaunchScreen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LaunchScreen.h; sourceTree = "<group>"; };
+		F67B176623B7527100783E0A /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CMakeLists.txt; path = ../CMakeLists.txt; sourceTree = "<group>"; };
 		F69CA00D2393A55700FF1B3D /* hit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hit.wav; sourceTree = "<group>"; };
 		F69CA00E2393A55700FF1B3D /* score.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = score.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -246,6 +249,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				F67B176623B7527100783E0A /* CMakeLists.txt */,
 				46880B8319C43A87006E1F66 /* Classes */,
 				46880B7519C43A67006E1F66 /* Resources */,
 				1AC6FAE5180E9839004C840B /* cocos2d_libs.xcodeproj */,
@@ -443,6 +447,7 @@
 				F69CA0112393A55700FF1B3D /* score.wav in Resources */,
 				1A88B2641FC3D9C9005C14AE /* Images.xcassets in Resources */,
 				F62F3B71238E61B80036E751 /* hd in Resources */,
+				F67B176723B7527100783E0A /* CMakeLists.txt in Resources */,
 				521A8EA919F11F5000D177D7 /* fonts in Resources */,
 				3EACC98F19EE6D4300EB3C5E /* res in Resources */,
 				1AF87B891F6F781D007BE51C /* LaunchScreenBackground.png in Resources */,
@@ -459,6 +464,7 @@
 				F62F3B7C23912C930036E751 /* sd in Resources */,
 				F69CA0122393A55700FF1B3D /* score.wav in Resources */,
 				503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */,
+				F67B176823B7527100783E0A /* CMakeLists.txt in Resources */,
 				3EACC99019EE6D4300EB3C5E /* res in Resources */,
 				521A8EAA19F11F5000D177D7 /* fonts in Resources */,
 				F62F3B7E23912C930036E751 /* hd in Resources */,
