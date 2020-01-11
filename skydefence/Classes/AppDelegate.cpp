@@ -23,18 +23,13 @@
  ****************************************************************************/
 
 #include "AppDelegate.h"
-#include "HelloWorldScene.h"
+#include "GameLayer.h"
 
-// #define USE_AUDIO_ENGINE 1
-
-#if USE_AUDIO_ENGINE
-#include "audio/include/AudioEngine.h"
-using namespace cocos2d::experimental;
-#endif
+#include <AudioEngine.h>
 
 USING_NS_CC;
 
-static cocos2d::Size designResolutionSize = cocos2d::Size(480, 320);
+static cocos2d::Size designResolutionSize = cocos2d::Size(2048, 1536);
 static cocos2d::Size smallResolutionSize = cocos2d::Size(480, 320);
 static cocos2d::Size mediumResolutionSize = cocos2d::Size(1024, 768);
 static cocos2d::Size largeResolutionSize = cocos2d::Size(2048, 1536);
@@ -45,9 +40,7 @@ AppDelegate::AppDelegate()
 
 AppDelegate::~AppDelegate() 
 {
-#if USE_AUDIO_ENGINE
     AudioEngine::end();
-#endif
 }
 
 // if you want a different context, modify the value of glContextAttrs
@@ -104,14 +97,18 @@ bool AppDelegate::applicationDidFinishLaunching() {
     {        
         director->setContentScaleFactor(MIN(smallResolutionSize.height/designResolutionSize.height, smallResolutionSize.width/designResolutionSize.width));
     }
+    
+    setupSearchPaths(frameSize);
 
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    auto scene = HelloWorld::createScene();
+    auto scene = GameLayer::scene();
 
     // run
     director->runWithScene(scene);
+    
+    setupAudio();
 
     return true;
 }
@@ -120,16 +117,50 @@ bool AppDelegate::applicationDidFinishLaunching() {
 void AppDelegate::applicationDidEnterBackground() {
     Director::getInstance()->stopAnimation();
 
-#if USE_AUDIO_ENGINE
     AudioEngine::pauseAll();
-#endif
 }
 
 // this function will be called when the app is active again
 void AppDelegate::applicationWillEnterForeground() {
     Director::getInstance()->startAnimation();
 
-#if USE_AUDIO_ENGINE
     AudioEngine::resumeAll();
-#endif
+}
+
+
+void AppDelegate::setupSearchPaths(Size frameSize)
+{
+    // https://stackoverflow.com/questions/23716220/cocos2d-x-3-0-create-sprite-by-relative-path
+    std::vector<std::string> resDirOrders;
+    std::vector<std::string> searchPaths = FileUtils::getInstance()->getSearchPaths();
+    searchPaths.insert(searchPaths.begin(), "res");
+    searchPaths.insert(searchPaths.begin(), "fonts");
+    FileUtils::getInstance()->setSearchPaths(searchPaths);
+    
+    auto director = Director::getInstance();
+    if (frameSize.height > mediumResolutionSize.height)
+    {
+        director->setContentScaleFactor(1);
+        resDirOrders.push_back("ipadhd");
+    }
+    else if (frameSize.height > smallResolutionSize.height)
+    {
+        director->setContentScaleFactor(0.5);
+        resDirOrders.push_back("ipad");
+    }
+    else{
+        director->setContentScaleFactor(0.25);
+        resDirOrders.push_back("iphone");
+    }
+    FileUtils::getInstance()->setSearchResolutionsOrder(resDirOrders);
+}
+
+void AppDelegate::setupAudio()
+{
+    AudioEngine::preload("background.mp3");
+    AudioEngine::preload("bombFail.wav");
+    AudioEngine::preload("bombRelease.wav");
+    AudioEngine::preload("boom.wav");
+    AudioEngine::preload("health.wav");
+    AudioEngine::preload("fire_truck.wav");
 }
