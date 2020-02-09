@@ -32,7 +32,7 @@
 
 #include "GameLayer.h"
 
-#include <AudioEngine.h>
+#include "AudioContent.h"
 
 USING_NS_CC;
 
@@ -70,7 +70,7 @@ bool GameLayer::init()
     
     _running = false;
     
-    createGameScreen();
+    // createGameScreen();
     
     createPools();
     
@@ -78,8 +78,7 @@ bool GameLayer::init()
 
     schedule(CC_SCHEDULE_SELECTOR(GameLayer::update));
     
-    AudioEngine::play2d("background.mp3", true);
-    
+    AudioContent::getInstance().play(AudioContent::Id::Background);
     return true;
 }
 
@@ -126,7 +125,7 @@ void GameLayer::fallingObjectDone(cocos2d::Node *pSender)
         _energy -= 15;
         auto groundHit = _groundHit->clone();
         pSender->runAction(groundHit);
-        AudioEngine::play2d("boom.wav");
+        AudioContent::getInstance().play(AudioContent::Id::Boom);
     }
     else
     {
@@ -146,14 +145,14 @@ void GameLayer::fallingObjectDone(cocos2d::Node *pSender)
                 _energy = 100;
             }
         }
-        AudioEngine::play2d("health.wav");
+        AudioContent::getInstance().play(AudioContent::Id::Health);
     }
     // if energy is zero game over
     if (_energy <= 0)
     {
         _energy = 0;
         stopGame();
-        AudioEngine::play2d("fire_truc.wav");
+        AudioContent::getInstance().play(AudioContent::Id::FireTruck);
         
         _gameOverMessage->setVisible(true);
     }
@@ -227,6 +226,34 @@ void GameLayer::createGameScreen()
     auto bg = Sprite::create("bg.png");
     bg->setPosition(Vec2(_screenSize.width * 0.5f, _screenSize.height * 0.5f));
     addChild(bg);
+    
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprite_sheet.plist");
+    
+    auto batchNode = SpriteBatchNode::create("sprite_sheet.png");
+    _gameBatchNode = std::unique_ptr<cocos2d::SpriteBatchNode>(batchNode);
+    
+    Sprite *sprite;
+    for (int i = 0; i < 2; ++i)
+    {
+        sprite = Sprite::createWithSpriteFrameName("city_dark.png");
+        auto x = _screenSize.width * (0.25f + i * 0.5f);
+        auto y = sprite->getBoundingBox().size.height  * 0.5f;
+        sprite->setPosition(Vec2(x, y));
+        _gameBatchNode->addChild(sprite, kForeground);
+        
+        sprite = Sprite::createWithSpriteFrameName("city_light.png");
+        y = sprite->getBoundingBox().size.height  * 0.9f;
+        sprite->setPosition(x, y);
+        _gameBatchNode->addChild(sprite, kBackground);
+    }
+    for (int i = 0; i < 3; ++i)
+    {
+        sprite = Sprite::createWithSpriteFrameName("trees.png");
+        auto x = _screenSize.width * (0.2f + i * 0.3f);
+        auto y = sprite->getBoundingBox().size.height  * 0.5f;
+        sprite->setPosition(Vec2(x, y));
+        _gameBatchNode->addChild(sprite, kForeground);
+    }
 }
 
 //this function is called at regular intervals

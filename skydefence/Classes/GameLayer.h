@@ -79,6 +79,7 @@ private:
     std::vector<std::unique_ptr<cocos2d::Sprite>> _clouds;
     
     std::unique_ptr<cocos2d::SpriteBatchNode> _gameBatchNode;
+    
     cocos2d::Sprite * _bomb;
     cocos2d::Sprite * _shockWave;
     

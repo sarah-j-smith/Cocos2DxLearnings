@@ -25,11 +25,7 @@
 #include "AppDelegate.h"
 #include "LaunchScreen.h"
 
-#define USE_AUDIO_ENGINE 1
-
-#if USE_AUDIO_ENGINE
-#include "audio/include/AudioEngine.h"
-#endif
+#include "AudioEngine.h"
 
 USING_NS_CC;
 
@@ -45,9 +41,7 @@ AppDelegate::AppDelegate()
 
 AppDelegate::~AppDelegate() 
 {
-#if USE_AUDIO_ENGINE
     AudioEngine::end();
-#endif
 }
 
 // if you want a different context, modify the value of glContextAttrs
@@ -128,18 +122,14 @@ bool AppDelegate::applicationDidFinishLaunching() {
 void AppDelegate::applicationDidEnterBackground() {
     Director::getInstance()->stopAnimation();
 
-#if USE_AUDIO_ENGINE
     AudioEngine::pauseAll();
-#endif
 }
 
 // this function will be called when the app is active again
 void AppDelegate::applicationWillEnterForeground() {
     Director::getInstance()->startAnimation();
 
-#if USE_AUDIO_ENGINE
     AudioEngine::resumeAll();
-#endif
 }
 
 void AppDelegate::setupSearchPaths(Size frameSize)

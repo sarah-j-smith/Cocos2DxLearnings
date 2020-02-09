@@ -59,7 +59,7 @@ public:
     */
     virtual void applicationWillEnterForeground();
     
-private:    
+private:
     void setupSearchPaths(cocos2d::Size frameSize);
     void setupAudio();
 };

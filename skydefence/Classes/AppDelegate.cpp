@@ -27,6 +27,8 @@
 
 #include <AudioEngine.h>
 
+#include "AudioContent.h"
+
 USING_NS_CC;
 
 static cocos2d::Size designResolutionSize = cocos2d::Size(2048, 1536);
@@ -133,7 +135,6 @@ void AppDelegate::setupSearchPaths(Size frameSize)
     // https://stackoverflow.com/questions/23716220/cocos2d-x-3-0-create-sprite-by-relative-path
     std::vector<std::string> resDirOrders;
     std::vector<std::string> searchPaths = FileUtils::getInstance()->getSearchPaths();
-    searchPaths.insert(searchPaths.begin(), "res");
     searchPaths.insert(searchPaths.begin(), "fonts");
     FileUtils::getInstance()->setSearchPaths(searchPaths);
     
@@ -157,10 +158,5 @@ void AppDelegate::setupSearchPaths(Size frameSize)
 
 void AppDelegate::setupAudio()
 {
-    AudioEngine::preload("background.mp3");
-    AudioEngine::preload("bombFail.wav");
-    AudioEngine::preload("bombRelease.wav");
-    AudioEngine::preload("boom.wav");
-    AudioEngine::preload("health.wav");
-    AudioEngine::preload("fire_truck.wav");
+    AudioContent::getInstance().init();
 }
