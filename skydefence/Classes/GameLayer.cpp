@@ -70,7 +70,7 @@ bool GameLayer::init()
     
     _running = false;
     
-    // createGameScreen();
+    createGameScreen();
     
     createPools();
     
